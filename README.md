@@ -1,4 +1,6 @@
-# How to generate proceedings for \*CL Conferences and Workshops in aclpub2 format
+# Fork of ACLPUB2 for use with NEJLT
+
+## How to generate proceedings for \*CL Conferences and Workshops in aclpub2 format
 
 **aclpub2** supports the generation of Proceedings and Booklets for \*CL Conferences (ACL, NAACL, EMNLP, ... ) and related Workshops. 
 This README has been created to provide the instructions to follow to generate proceedings/booklets in aclpub2 format. 

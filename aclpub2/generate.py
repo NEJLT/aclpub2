@@ -31,6 +31,10 @@ def generate_proceedings(path: str, overwrite: bool, outdir: str, nopax: bool, f
         shutil.rmtree(str(build_dir), ignore_errors=True)
         build_dir.mkdir()
 
+    # Copy cover.pdf
+    if (coverpdf := Path(root, "cover.pdf")).is_file():
+        shutil.copy2(coverpdf, Path(build_dir, "cover.pdf"))
+
     # Load and preprocess the .yml configuration.
     (
         conference,
@@ -298,13 +302,14 @@ def generate_handbook(path: str, overwrite: bool):
 def get_conference_dates(conference) -> str:
     start_date = conference["start_date"]
     end_date = conference["end_date"]
-    start_month = start_date.strftime("%B")
+    # start_month = start_date.strftime("%B")
     end_month = end_date.strftime("%B")
-    if start_month == end_month:
-        if start_date.day == end_date.day:
-            return f"{start_month} {start_date.day}"
-        return f"{start_month} {start_date.day}-{end_date.day}"
-    return f"{start_month} {start_date.day} - {end_month} {end_date.day}"
+    return end_month
+    # if start_month == end_month:
+    #     if start_date.day == end_date.day:
+    #         return f"{start_month} {start_date.day}"
+    #     return f"{start_month} {start_date.day}-{end_date.day}"
+    # return f"{start_month} {start_date.day} - {end_month} {end_date.day}"
 
 
 def process_papers(papers, root: Path):

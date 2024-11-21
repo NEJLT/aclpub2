@@ -1,41 +1,81 @@
-\documentclass[11pt,oneside]{book}
+\documentclass{article}
+
 \usepackage{enumitem}
-\usepackage{fancyhdr}
-\usepackage[a4paper,top=2cm,bottom=3cm,left=2cm,right=2cm,marginparwidth=1.75cm]{geometry}
-\usepackage{hyperref}
-\usepackage{eurosym}
 
-
-%\usepackage[T1]{fontenc}
-% For Vietnamese characters
-\usepackage[T5]{fontenc}
+%%%%% NEJLT STYLE
+%% LAYOUT AND GENERAL APPEARANCE
+\usepackage[tt=false, type1=true, sfdefault]{libertine}
+\usepackage[libertine]{newtxmath}
+\usepackage{xcolor}
+\definecolor{nejltblue}{RGB}{63,81,181}
 \usepackage[utf8]{inputenc}
 
+\usepackage[a4paper,portrait]{geometry}
+\geometry{
+    textwidth=170mm,
+    textheight=235mm,
+    footskip=22mm, % was: 12mm
+    %voffset=10mm  % voffset is added to footskip
+}
+% try to balance page end
+\flushbottom
+% don't break lines unless we really have to
+\sloppy
+\usepackage[]{hyperref}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=nejltblue,
+  filecolor=nejltblue,
+  urlcolor=nejltblue,
+  citecolor=nejltblue,
+  anchorcolor=nejltblue,
+  pdftitle={\VAR{conference.book_title}}
+}
+
+%% HEADERS AND FOOTERS
+\usepackage{fancyhdr}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{.8pt}
+\fancyfoot[C]{\VAR{conference.event_name}}
+\fancyfoot[R]{\thepage}
+\fancyfoot[L]{Vol.\,\VAR{conference.volume_number}, \VAR{conference.start_date.year}}
+
+\fancypagestyle{paper}{
+  \fancyhf{}
+  \renewcommand{\headrulewidth}{0pt}
+  \renewcommand{\footrulewidth}{0pt}
+  \fancyhead{~}
+  \fancyfoot[L]{Vol.\,\VAR{conference.volume_number}, \VAR{conference.start_date.year}}
+  \fancyfoot[R]{\thepage}
+}
+%%%%% /NEJLT STYLE
+
+\usepackage{eurosym}
 \usepackage{multicol}
+
 \usepackage{pdfpages}
 \BLOCK{if not nopax}
 \usepackage{pax}
 \BLOCK{endif}
-\usepackage{times}
 \usepackage[english,latin]{babel}
 
-\hypersetup{
-    colorlinks,
-    linktoc=all,
-    linkcolor=red,
-    pdftitle={\VAR{conference.book_title}}
-}
-\setlength{\paperwidth}{21cm}    % A4
-\setlength{\paperheight}{29.7cm} % A4
+% %%% For cover page
+% \usepackage{adjustbox}
+% \usepackage{tikz}
+% \newsavebox\coverimagebox
+
+%\setlength{\paperwidth}{21cm}    % A4
+%\setlength{\paperheight}{29.7cm} % A4
 \special{papersize=21cm, 29.7cm}
 \pdfpageheight\paperheight
 \pdfpagewidth\paperwidth
-\setlength\topmargin{-5mm} \setlength\oddsidemargin{-0cm}
-\setlength\textheight{24.7cm} \setlength\textwidth{16cm}
-\setlength\columnsep{0.6cm}  \newlength\titlebox \setlength\titlebox{2.00in}
-\setlength\headheight{5pt}   \setlength\headsep{0pt}
-\setlength\footskip{1.0cm}
-\setlength\parindent{0pt}
+% \setlength\topmargin{-5mm} \setlength\oddsidemargin{-0cm}
+% \setlength\textheight{23.5cm} \setlength\textwidth{17cm}
+% \setlength\columnsep{0.6cm}  \newlength\titlebox \setlength\titlebox{2.00in}
+% \setlength\headheight{5pt}   \setlength\headsep{0pt}
+% \setlength\footskip{1.2cm}
+% \setlength\parindent{0pt}
 
 \pagestyle{plain}
 \pagenumbering{roman}
@@ -51,150 +91,89 @@
 %%%%%%%%%
 % Cover %
 %%%%%%%%%
+\includepdf[pagecommand={\thispagestyle{plain}},pages={1},addtotoc={1,section,1,Title page,titlepage}]{cover.pdf}
+
 \begin{titlepage}
-  \phantomsection
-  \addcontentsline{toc}{section}{Title page}
+  % \phantomsection
+  % \addcontentsline{toc}{section}{Title page}
+  % \tikz[remember picture,overlay] \node[inner sep=0pt,yshift=-10mm] at (current page.center) {% yshift: need to compensate voffset
+  %   \ifdim\wd\coverimagebox>\ht\coverimagebox% wider than high
+  %     \adjustimage{width=\paperwidth}{\VAR{conference.cover_image}}%
+  %   \else%
+  %     \adjustimage{height=\paperheight}{\VAR{conference.cover_image}}%
+  %   \fi%
+  % };
   \begin{center}
-    \vspace{1.5cm}
+    \vspace*{75mm}
 
-    {\LARGE \VAR{conference.anthology_venue_id} \VAR{conference.start_date.year}}
+    {\bf\LARGE \VAR{conference.event_name}\\[4mm] (\VAR{conference.anthology_venue_id})}
 
-    \vspace*{65mm}
-
-    {\bf\LARGE \VAR{conference.event_name}}
-
-    \vspace*{5cm}
+    \vspace*{3cm}
 
     {\bf\LARGE \VAR{conference.cover_subtitle}}
 
     \vfill
 
-    {\LARGE \VAR{conference_dates}, \VAR{conference.start_date.year}}
+    {\LARGE \VAR{conference_dates} \VAR{conference.start_date.year}}
   \end{center}
 \end{titlepage}
 \newpage
-
-%%%%%%%%%%%%
-% Sponsors %
-%%%%%%%%%%%%
-\BLOCK{if sponsors}
-\setcounter{page}{2}
-\phantomsection
-\addcontentsline{toc}{section}{Sponsors}
-\vspace*{2cm}
-\noindent
-
-{\Large The \VAR{conference.anthology_venue_id} organizers gratefully acknowledge the support from the following sponsors.}
-\bigskip
-
-\vspace*{1cm}
-
-\BLOCK{macro generate_sponsor_tier(tier)}
-  \begin{samepage}
-  \noindent
-  {\Large \textbf{\VAR{tier.tier}}}
-
-  \nopagebreak
-  \BLOCK{for logo_batched in tier.logos|batch(4)}
-    \BLOCK{for logo in logo_batched}
-      \begin{minipage}[c][0.21\linewidth][c]{0.21\linewidth}
-        \includegraphics[width=\linewidth]{\VAR{root}/sponsor_logos/\VAR{logo}}
-      \end{minipage}\hspace{0.05\linewidth}
-    \BLOCK{endfor}
-
-  \BLOCK{endfor}
-  \end{samepage}
-\BLOCK{endmacro}
-
-\BLOCK{for tier in sponsors}
-  \VAR{generate_sponsor_tier(tier)}
-  \bigskip
-  \bigskip
-\BLOCK{endfor}
-\newpage
-\BLOCK{endif}
-
+\pagestyle{fancy}
 
 %%%%%%%%%%%%%
 % Copyright %
 %%%%%%%%%%%%%
 \phantomsection
 \addcontentsline{toc}{section}{Copyright}
-\vspace*{11cm}
+% \vspace*{8cm}
+~\vfill
 {\large
 
 \noindent
-\textcopyright \VAR{conference.start_date.year} \VAR{conference.publisher}\\
+Editor-in-chief: \VAR{conference.editors[0].first_name} \VAR{conference.editors[0].last_name}, \texttt{editor@nejlt.org}\\
 
-\vspace*{2cm}
+\vspace*{.5cm}
 \noindent
-Order copies of this and other ACL proceedings from:
+Volume~\VAR{conference.volume_number} published in \VAR{conference.start_date.year} by \VAR{conference.publisher}.\\
+
+\vspace*{.2cm}
+\begin{tabular}{p{1cm}l}
+& LiU Electronic Press \\
+& Linköping University \\
+& 581\,83~Linköping \\
+& Sweden\\
+&{\tt ep@ep.liu.se}\\
+\end{tabular}\\
 
 \vspace*{1cm}
-\begin{tabular}{p{1.5cm}l}
-& Association for Computational Linguistics (ACL)\\
-& 317 Sidney Baker St. S \\
-& Suite 400 - 134\\
-& Kerrville, TX 78028\\
-& USA\\
-& Tel: +1-855-225-1962\\
-&{\tt acl@aclweb.org}\\
-\end{tabular}
+\noindent
+ISSN \VAR{conference.issn}\\
 
-\vspace*{1cm}
-ISBN \VAR{conference.isbn}
+\vspace*{.2cm}
+\noindent
+DOI \href{https://dx.doi.org/\VAR{conference.doi}}{\VAR{conference.doi}}\\
+
+\vspace*{5cm}
+\noindent
+All articles in this volume are licensed under the \href{https://creativecommons.org/licenses/by/4.0/}{Creative Commons Attribution~4.0 International (CC BY 4.0)} license.  Copyright remains with the respective authors.\\
+
+\vspace*{.2cm}
+\noindent
+The Northern European Journal of Language Technology~(NEJLT) is overseen by the Northern European Association for Language Technology~(NEALT), a scientific non-profit association.\\
 }
 \newpage
 
-
-%%%%%%%%%%%%
-% Prefaces %
-%%%%%%%%%%%%
-\BLOCK{if prefaces}
-\BLOCK{for preface in prefaces}
-  \phantomsection
-  \addcontentsline{toc}{section}{\VAR{preface.title}}
-  \begin{center}
-   { \Large \textbf{\VAR{preface.title}}}
-  \end{center}
-  \vspace*{0.5cm}
-  \VAR{load_file(root, "prefaces", preface.file)}
-  \newpage
-\BLOCK{endfor}
-\BLOCK{endif}
-
-%%%%%%%%%%%%%%%%%%%%%%%%
-% Organizing Committee %
-%%%%%%%%%%%%%%%%%%%%%%%%
-\BLOCK{if organizing_committee}
-\phantomsection
-\addcontentsline{toc}{section}{Organizing Committee}
-\begin{center}
-{\Large \textbf{Organizing Committee}}
-\end{center}
-\vspace*{1cm}
-\begin{description}
-\BLOCK{for role in organizing_committee}
-  \item{\bf \VAR{role.role}}\vspace{2mm}\\
-  \BLOCK{for member in role.members}
-    \VAR{committee_member(member)}\\
-  \BLOCK{endfor}
-\BLOCK{endfor}
-\end{description}
-\newpage
-\BLOCK{endif}
 
 %%%%%%%%%%%%%%%%%%%%%
 % Program Committee %
 %%%%%%%%%%%%%%%%%%%%%
 \BLOCK{if program_committee}
 \phantomsection
-\addcontentsline{toc}{section}{Program Committee}
-\begin{center}
-\Large \textbf{Program Committee}
-\end{center}
-\vspace*{1cm}
-\begin{description}
+\addcontentsline{toc}{section}{Editorial Board}
+{\noindent\LARGE Editorial Board \VAR{conference.start_date.year}}\\
+
+\vspace*{1cm}\noindent
+\begin{description}\large
 \BLOCK{for block in program_committee}
   \item{\bf \VAR{block.role}}\vspace{2mm}\\
   \BLOCK{if block.entries[0].area}
@@ -228,132 +207,18 @@ ISBN \VAR{conference.isbn}
 \newpage
 \BLOCK{endif}
 
-%%%%%%%%%%%%%%%%%
-% Invited Talks %
-%%%%%%%%%%%%%%%%%
-\BLOCK{if invited_talks}
-\BLOCK{for talk in invited_talks}
+%%%%%%%%%%%%
+% Prefaces %
+%%%%%%%%%%%%
+\BLOCK{if prefaces}
+\BLOCK{for preface in prefaces}
   \phantomsection
-  \addcontentsline{toc}{section}{Keynote Talk: \VAR{talk.title}}
-  \begin{center}
-    \BLOCK{if talk.custom_prefix}
-      {\Large \textbf{\VAR{talk.custom_prefix}}\\}
-      {\LARGE \textbf{\VAR{talk.title}}\\}
-    \BLOCK{else}
-      {\Large \textbf{Keynote Talk}\\}
-      {\LARGE \textbf{\VAR{talk.title}}\\}
-    \BLOCK{endif}
-    \vspace*{0.5cm}
-    %\begin{minipage}[c][0.35\linewidth][c]{0.35\linewidth}
-     % \end{minipage}\\
-    \textbf{\VAR{talk.speaker_name}}\\
-    \BLOCK{if talk.institution}
-    \VAR{talk.institution}\\
-    \BLOCK{endif}
-    
-    \BLOCK{if talk.photo}
-   \begin{center}
-        \includegraphics[width=0.3\linewidth]{\VAR{root}/invited_talks/\VAR{talk.photo}}
-     \end{center}    
-    \BLOCK{endif}
-    
-    \BLOCK{if talk.date}
-    \textbf{\VAR{talk.date}} -- 
-    \BLOCK{endif}
-    \BLOCK{if talk.time}
-    Time: \textbf{\VAR{talk.time}} --
-    \BLOCK{endif}
-    \BLOCK{if talk.location}
-    Room: \textbf{\VAR{talk.location}}\\
-    \BLOCK{endif}
-    
-  \end{center}
+  \addcontentsline{toc}{section}{\VAR{preface.title}}
+  {\noindent\LARGE \VAR{preface.title}}\\
 
-  \vspace*{0.2cm}
-  \BLOCK{if talk.abstract_file}
-  \textbf{Abstract:} \VAR{load_file(root, "invited_talks", talk.abstract_file)}\\
-  \newline
-  \BLOCK{endif}
-
-  \BLOCK{if talk.bio_file}
-  \textbf{Bio:} \VAR{load_file(root, "invited_talks", talk.bio_file)}
+  \vspace*{1cm}\noindent
+  \VAR{load_file(root, "prefaces", preface.file)}
   \newpage
-  \BLOCK{endif}
-\BLOCK{endfor}
-\BLOCK{endif}
-
-
-%%%%%%%%%%%%%%%%%
-% Panels %
-%%%%%%%%%%%%%%%%%
-\BLOCK{if panels}
-\BLOCK{for panel in panels}
-  \phantomsection
-  \addcontentsline{toc}{section}{Panel: \VAR{panel.title}}
-  \begin{center}
-    {\Large \textbf{Panel}\\}
-    {\LARGE \textbf{\VAR{panel.title}}\\}
-    
-    \BLOCK{if panel.photo}
-        \begin{center}
-        \includegraphics[width=\linewidth]{\VAR{root}/panels/\VAR{panel.photo}}
-        \end{center}
-    \BLOCK{endif}
-    
-    \vspace*{0.5cm}
-    \BLOCK{if panel.date}
-    \textbf{\VAR{panel.date}} -- 
-    \BLOCK{endif}
-    \BLOCK{if panel.time}
-    Time: \textbf{\VAR{panel.time}} --
-    \BLOCK{endif}
-    \BLOCK{if panel.location}
-    Room: \textbf{\VAR{panel.location}}
-    \BLOCK{endif}
-  \end{center}
-  \BLOCK{if panel.abstract_file}
-  \VAR{load_file(root, "panels", panel.abstract_file)}\\
-  \BLOCK{endif}
-  \newline
-    %\begin{minipage}[c][0.35\linewidth][c]{0.35\linewidth}
-     % \end{minipage}\\
-    \BLOCK{if panel.moderators} 
-    	\BLOCK{for moderator in panel.moderators} 
-    	    \BLOCK{if moderator.name}
-    			\textbf{\textbf{Moderator: }\VAR{moderator.name}},
-    		\BLOCK{endif}
-    		\BLOCK{if moderator.institution}
-    		 	\textbf{\VAR{moderator.institution}}
-    		\BLOCK{endif}
-    		\BLOCK{if moderator.bio_file}
-  				\VAR{load_file(root, "panels", moderator.bio_file)}\\
-
-  			\BLOCK{endif}
-    		 
-    	\BLOCK{endfor}
-    \BLOCK{endif}  
-    
-    \BLOCK{if panel.panelists} 
-        \textbf{Panelists: }\\
-    	\BLOCK{for panelist in panel.panelists} 
-    	    \BLOCK{if panelist.name}
-    			\textbf{\VAR{panelist.name}},
-    		\BLOCK{endif}
-    		\BLOCK{if panelist.institution}
-    		 	\VAR{panelist.institution}
-    		\BLOCK{endif}
-    		\BLOCK{if panelist.bio_file}
-  				\VAR{load_file(root, "panels", panelist.bio_file)}\\
-  				\newline
-
-  			\BLOCK{endif}
-    		 
-    	\BLOCK{endfor}
-    \BLOCK{endif}
-
-
-  \newpage
-  
 \BLOCK{endfor}
 \BLOCK{endif}
 
@@ -364,10 +229,9 @@ ISBN \VAR{conference.isbn}
 \BLOCK{for additional_page in additional_pages}
   \phantomsection
   \addcontentsline{toc}{section}{\VAR{additional_page.title}}
-  \begin{center}
-   { \LARGE \textbf{\VAR{additional_page.title}}}
-  \end{center}
-  \vspace*{0.5cm}
+  {\noindent\LARGE \VAR{additional_page.title}}\\
+
+  \vspace*{1cm}\noindent
   \VAR{load_file(root, "additional_pages", additional_page.file)}
   \newpage
 \BLOCK{endfor}
@@ -380,11 +244,11 @@ ISBN \VAR{conference.isbn}
 \phantomsection
 \addcontentsline{toc}{section}{Table of Contents}
 \newpage  % Empty page before TOC
-\pagestyle{plain}
-\begin{center}
-{\Large \textbf{Table of Contents}}
-\end{center}
-\vspace*{1em}
+\pagestyle{fancy}
+%\begin{center}
+{\noindent\LARGE {Table of Contents}}
+%\end{center}
+\vspace*{1cm}
 \newcommand\page[1]{\rightskip=25pt \dotfill\rlap{\hbox to 25pt{\hfill#1}}\par}
 \begin{itemize}[leftmargin=*,label={}]
   \BLOCK{for paper in archival_papers}
@@ -450,29 +314,12 @@ ISBN \VAR{conference.isbn}
     \BLOCK{set title=conference.book_title}
     \BLOCK{endif}
 
-    \put(0,13){\parbox[t]{\paperwidth}{\centering
-    							\emph{\VAR{title}}, pages \VAR{paper.start_page}--\VAR{paper.end_page} \\
-  	  						\VAR{conference_dates}, \VAR{conference.start_date.year} \textcopyright
-  							\VAR{conference.start_date.year} Association for Computational Linguistics}}
+    \put(0,11){\parbox[t]{\paperwidth}{\centering
+        Licensed under \href{https://creativecommons.org/licenses/by/4.0/}{CC BY 4.0},
+        pages \VAR{paper.start_page}--\VAR{paper.end_page}, DOI \href{https://dx.doi.org/\VAR{paper.doi}}{\VAR{paper.doi}}}}
   }
-  \includepdf[pagecommand={\thispagestyle{plain}},pages=-,addtotoc={1,section,1,{\VAR{paper.title}},ref:paper_{\VAR{paper.id}}}]{\VAR{root}/papers/\VAR{paper.file}}
+  \includepdf[pagecommand={\thispagestyle{paper}},pages=-,addtotoc={1,section,1,{\VAR{paper.title}},ref:paper_{\VAR{paper.id}}}]{\VAR{root}/papers/\VAR{paper.file}}
 \BLOCK{endfor}
-
-%%%%%%%%%%%%%%%%
-% Author Index %
-%%%%%%%%%%%%%%%%
-\begin{huge}
-Author Index
-\end{huge}
-\vspace*{1em}
-\begin{multicols}{2}
-\BLOCK{for _, author_to_pages in alphabetized_author_index}
-\BLOCK{for author, pages in author_to_pages}
-\VAR{author}, \VAR{join_page_numbers(pages)}\\
-\BLOCK{endfor}
-\\ % Extra space between new letters.
-\BLOCK{endfor}
-\end{multicols}
 
 \BLOCK{endif}
 

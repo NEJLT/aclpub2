@@ -1,29 +1,61 @@
-\documentclass[11pt,oneside]{book}
-\usepackage{fancyhdr}
-\usepackage[a4paper,top=2cm,bottom=3cm,left=2cm,right=2cm,marginparwidth=1.75cm]{geometry}
-\usepackage[utf8]{inputenc}
-\usepackage{pdfpages}
-\usepackage{times}
-\usepackage{pax}
-\usepackage{hyperref}
-\usepackage{lscape}
+\documentclass{article}
 
-\hypersetup{
-    colorlinks,
-    linktoc=all,
-    linkcolor=red,
+\usepackage{enumitem}
+
+%%%%% NEJLT STYLE
+%% LAYOUT AND GENERAL APPEARANCE
+\usepackage[tt=false, type1=true, sfdefault]{libertine}
+\usepackage[libertine]{newtxmath}
+\usepackage{xcolor}
+\definecolor{nejltblue}{RGB}{63,81,181}
+\usepackage[utf8]{inputenc}
+
+\usepackage[a4paper,portrait]{geometry}
+\geometry{
+    textwidth=170mm,
+    textheight=235mm,
+    footskip=22mm, % was: 12mm
+    %voffset=10mm  % voffset is added to footskip
 }
-\setlength{\paperwidth}{21cm}   % A4
-\setlength{\paperheight}{29.7cm}% A4
-\special{papersize=21cm, 29.7cm}
-\pdfpageheight\paperheight
-\pdfpagewidth\paperwidth
-\setlength\topmargin{-5mm} \setlength\oddsidemargin{-0cm}
-\setlength\textheight{24.7cm} \setlength\textwidth{16cm}
-\setlength\columnsep{0.6cm}  \newlength\titlebox \setlength\titlebox{2.00in}
-\setlength\headheight{5pt}   \setlength\headsep{0pt}
-\setlength\footskip{1.0cm}
-\setlength\parindent{0pt}
+% try to balance page end
+\flushbottom
+% don't break lines unless we really have to
+\sloppy
+\usepackage[]{hyperref}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=nejltblue,
+  filecolor=nejltblue,
+  urlcolor=nejltblue,
+  citecolor=nejltblue,
+  anchorcolor=nejltblue,
+  pdftitle={\VAR{conference.book_title}}
+}
+
+%% HEADERS AND FOOTERS
+\usepackage{fancyhdr}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{.8pt}
+\fancyfoot[C]{\VAR{conference.event_name}}
+\fancyfoot[R]{\thepage}
+\fancyfoot[L]{Vol.\,\VAR{conference.volume_number}, \VAR{conference.start_date.year}}
+
+\fancypagestyle{paper}{
+  \fancyhf{}
+  \renewcommand{\headrulewidth}{0pt}
+  \renewcommand{\footrulewidth}{0pt}
+  \fancyhead{~}
+  \fancyfoot[L]{Vol.\,\VAR{conference.volume_number}, \VAR{conference.start_date.year}}
+  \fancyfoot[R]{\thepage}
+}
+%%%%% /NEJLT STYLE
+
+\usepackage{pdfpages}
+\BLOCK{if not nopax}
+\usepackage{pax}
+\BLOCK{endif}
+\usepackage[english,latin]{babel}
 
 \pagestyle{plain}
 \pagenumbering{arabic}
@@ -41,11 +73,9 @@
   \BLOCK{set title=conference.book_title}
   \BLOCK{endif}
 
-  \put(0,13){\parbox[t]{\paperwidth}{\centering
-  							\emph{\VAR{title}}, pages \VAR{paper.start_page}--\VAR{paper.end_page} \\
-	  						\VAR{conference_dates}, \VAR{conference.start_date.year} \textcopyright
-							\VAR{conference.start_date.year} Association for Computational Linguistics}}
-
+  \put(0,11){\parbox[t]{\paperwidth}{\centering
+      Licensed under \href{https://creativecommons.org/licenses/by/4.0/}{CC BY 4.0},
+      pages \VAR{paper.start_page}--\VAR{paper.end_page}, DOI \href{https://dx.doi.org/\VAR{paper.doi}}{\VAR{paper.doi}}}}
 }
-\includepdf[pagecommand={\thispagestyle{plain}},pages=-]{\VAR{root}/papers/\VAR{paper.file}}
+\includepdf[pagecommand={\thispagestyle{paper}},pages=-]{\VAR{root}/papers/\VAR{paper.file}}
 \end{document}
