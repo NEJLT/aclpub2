@@ -153,6 +153,12 @@ ISSN \VAR{conference.issn}\\
 \noindent
 DOI \href{https://dx.doi.org/\VAR{conference.doi}}{\VAR{conference.doi}}\\
 
+\BLOCK{if conference.cover_image}
+\vspace*{.2cm}
+\noindent
+Cover image: {\VAR{conference.cover_image}}\\
+\BLOCK{endif}
+
 \vspace*{5cm}
 \noindent
 All articles in this volume are licensed under the \href{https://creativecommons.org/licenses/by/4.0/}{Creative Commons Attribution~4.0 International (CC BY 4.0)} license.  Copyright remains with the respective authors.\\
@@ -214,6 +220,7 @@ The Northern European Journal of Language Technology~(NEJLT) is overseen by the 
 \BLOCK{for preface in prefaces}
   \phantomsection
   \addcontentsline{toc}{section}{\VAR{preface.title}}
+  \vspace*{0.6cm}
   {\noindent\LARGE \VAR{preface.title}}\\
 
   \vspace*{1cm}\noindent
